@@ -72,6 +72,27 @@ let handleUploadFile = (req, res) => {
   });
 };
 // END UPLOAD FILE
+
+// UPLOAD multi FILE
+let handleUploadMultipleFiles = async (req, res) => {
+  if (req.fileValidationError) {
+    return res.send(req.fileValidationError);
+  } else if (!req.files.length) {
+    return res.send("Please select an image to upload");
+  }
+  let result = "You have uploaded these images: <hr />";
+  const files = req.files;
+  let index, len;
+
+  // Loop through all the uploaded images and display them on frontend
+  for (index = 0, len = files.length; index < len; ++index) {
+    result += `<img src="/image/${files[index].filename}" width="300" style="margin-right: 20px;">`;
+  }
+  result += '<hr/><a href="/upload">Upload more images</a>';
+  res.send(result);
+};
+
+// END UPLOAD multi FILE
 module.exports = {
   getHomepage,
   getDetailPage,
@@ -81,4 +102,5 @@ module.exports = {
   postUpdateUser,
   getUploadFilePage,
   handleUploadFile,
+  handleUploadMultipleFiles,
 };
